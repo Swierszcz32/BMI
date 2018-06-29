@@ -7,5 +7,11 @@ public class ConvertVariable {
 		int bmi = weight/(height*height);
 		return bmi;
 	}
+	public double converting(double height, double weight) {
+		TransmittedVariable tv = new TransmittedVariable(height, weight);
+		double bmi = weight/(height*height);
+		return bmi;
+	}
+	
 	
 }

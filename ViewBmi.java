@@ -3,6 +3,8 @@ import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ViewBmi extends JFrame{
 	
@@ -21,6 +23,8 @@ public class ViewBmi extends JFrame{
 		initButtons();
 		setVisible(true);
 	}
+	
+	private double heightInteger,weightInteger, bmiInteger;
 	
 	JButton convert;
 	JLabel resultBMI;
@@ -60,11 +64,13 @@ public class ViewBmi extends JFrame{
 
         yourBMI.setText("Score");
 
-        scoreBMI.setText("scoreBMI");
+//        scoreBMI.setText("scoreBMI");
 
         yourDiagnosis.setText("Diagnosis");
 
-        diagnosis.setText("diagnosis");
+//        diagnosis.setText("diagnosis");
+        
+        convert.addActionListener(new ListenerOfButton());
 
         getContentPane().setLayout(layout);
         
@@ -124,6 +130,24 @@ public class ViewBmi extends JFrame{
         );
 
         pack();
+		
+	}
+	
+	private class ListenerOfButton implements ActionListener{
+		
+		ConvertVariable cv = new ConvertVariable();
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			if(!textHeight.getText().equals("") && !textWeight.getText().equals("")) {
+			heightInteger = Double.parseDouble(textHeight.getText());
+			weightInteger = Double.parseDouble(textWeight.getText());
+			bmiInteger = cv.converting(heightInteger, weightInteger);
+			scoreBMI.setText(String.valueOf(bmiInteger));
+			}
+			
+		}
 		
 	}
 	public static void main(String[] args) {
