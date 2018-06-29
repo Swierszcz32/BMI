@@ -24,8 +24,6 @@ public class ViewBmi extends JFrame{
 		setVisible(true);
 	}
 	
-	private double heightInteger,weightInteger, bmiInteger;
-	
 	JButton convert;
 	JLabel resultBMI;
 	JLabel title;
@@ -38,6 +36,7 @@ public class ViewBmi extends JFrame{
 	JTextField textHeight;
 	JTextField textWeight;
 	GroupLayout layout = new GroupLayout(getContentPane());
+	ConvertVariable cv = new ConvertVariable();
 	
 	private void initButtons() {
 //		jScrollPane1 = new JScrollPane();
@@ -59,7 +58,7 @@ public class ViewBmi extends JFrame{
         setHeight.setText("Give height");
 
         setWeight.setText("Give weight");
-
+        
         convert.setText("Convert");
 
         yourBMI.setText("Score");
@@ -70,7 +69,37 @@ public class ViewBmi extends JFrame{
 
 //        diagnosis.setText("diagnosis");
         
-        convert.addActionListener(new ListenerOfButton());
+        convert.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(!textHeight.getText().equals("") && !textWeight.getText().equals("")) {
+					try {
+					TransmittedVariable tv = new TransmittedVariable(Double.parseDouble(textHeight.getText()), Double.parseDouble(textWeight.getText()));
+			
+					scoreBMI.setText(String.valueOf(cv.converting(tv.getHeight(), tv.getWeight())));
+					} catch (NumberFormatException ex) {
+						scoreBMI.setText(ex.getMessage());
+						diagnosis.setText(ex.getMessage());
+					}
+					}
+				int i = 0;
+				if(Double.parseDouble(scoreBMI.getText()) < 18.5) i = 0;
+				if(Double.parseDouble(scoreBMI.getText()) >= 18.5 && Double.parseDouble(scoreBMI.getText()) < 25.0 ) i = 1;
+				if(Double.parseDouble(scoreBMI.getText()) >= 25.0) i = 2;
+				
+				switch( i ) {
+				case 0: diagnosis.setText("Underweight");
+				break;
+				case 1: diagnosis.setText("Correct value");
+				break;
+				case 2: diagnosis.setText("Overweight");
+				break;
+				}
+			}
+		}
+        );
 
         getContentPane().setLayout(layout);
         
@@ -133,23 +162,6 @@ public class ViewBmi extends JFrame{
 		
 	}
 	
-	private class ListenerOfButton implements ActionListener{
-		
-		ConvertVariable cv = new ConvertVariable();
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			if(!textHeight.getText().equals("") && !textWeight.getText().equals("")) {
-			heightInteger = Double.parseDouble(textHeight.getText());
-			weightInteger = Double.parseDouble(textWeight.getText());
-			bmiInteger = cv.converting(heightInteger, weightInteger);
-			scoreBMI.setText(String.valueOf(bmiInteger));
-			}
-			
-		}
-		
-	}
 	public static void main(String[] args) {
 		new ViewBmi();
 	}
